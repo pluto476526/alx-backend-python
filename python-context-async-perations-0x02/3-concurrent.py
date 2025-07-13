@@ -1,52 +1,40 @@
 #!/usr/bin/env python3
 """
-Run multiple MySQL queries concurrently using aiomysql and asyncio.gather.
+Run multiple SQLite queries concurrently using aiosqlite and asyncio.gather.
 """
 
 import asyncio
-import aiomysql
+import aiosqlite
 
 
-# Replace with your actual MySQL connection credentials
-DB_CONFIG = {
-    "host": "localhost",
-    "port": 3306,
-    "user": "your_username",
-    "password": "your_password",
-    "db": "your_database"
-}
+DB_PATH = "my_database.db"  # Replace with your actual SQLite database path
 
 
-async def async_fetch_users(pool):
-    async with pool.acquire() as conn:
-        async with conn.cursor() as cursor:
-            await cursor.execute("SELECT * FROM users")
-            users = await cursor.fetchall()
-            print("All users:")
-            for user in users:
-                print(user)
+async def async_fetch_users():
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute("SELECT * FROM users")
+        users = await cursor.fetchall()
+        await cursor.close()
+        print("All users:")
+        for user in users:
+            print(user)
 
 
-async def async_fetch_older_users(pool):
-    async with pool.acquire() as conn:
-        async with conn.cursor() as cursor:
-            await cursor.execute("SELECT * FROM users WHERE age > 40")
-            older_users = await cursor.fetchall()
-            print("\nUsers older than 40:")
-            for user in older_users:
-                print(user)
+async def async_fetch_older_users():
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute("SELECT * FROM users WHERE age > 40")
+        older_users = await cursor.fetchall()
+        await cursor.close()
+        print("\nUsers older than 40:")
+        for user in older_users:
+            print(user)
 
 
 async def fetch_concurrently():
-    pool = await aiomysql.create_pool(**DB_CONFIG)
-    try:
-        await asyncio.gather(
-            async_fetch_users(pool),
-            async_fetch_older_users(pool)
-        )
-    finally:
-        pool.close()
-        await pool.wait_closed()
+    await asyncio.gather(
+        async_fetch_users(),
+        async_fetch_older_users()
+    )
 
 
 if __name__ == "__main__":
