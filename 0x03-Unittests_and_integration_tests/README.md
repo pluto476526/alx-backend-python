@@ -1,5 +1,4 @@
 
-````markdown
 # 0x03. Unittests and Integration Tests
 
 This project contains unit tests and integration tests for utility functions defined in `utils.py`.
