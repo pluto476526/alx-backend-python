@@ -31,7 +31,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     def validate_message_body(self, value):
         if not value.strip():
-            raise ValidationError("Message cannot be empty")
+            raise serializers.ValidationError("Message cannot be empty")
         return value
 
 class ConversationSerializer(serializers.ModelSerializer):
