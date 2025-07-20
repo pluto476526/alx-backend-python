@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 """Unit and integration tests for client.GithubOrgClient
-
-This module contains test cases to verify the functionality of the GithubOrgClient
-class, including its properties and methods, using both unit tests with mocking
-and integration tests with fixtures.
 """
 
 import unittest
@@ -24,7 +20,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google", {"name": "google", "repos_url": "https://api.github.com/orgs/google/repos"}),
         ("abc", {"name": "abc", "repos_url": "https://api.github.com/orgs/abc/repos"})
     ])
-    @patch('utils.get_json')
+    @patch('client.get_json')
     def test_org(self, org_name: str, expected_payload: Dict, mock_get_json: Mock) -> None:
         """Test that GithubOrgClient.org returns the correct value
 
