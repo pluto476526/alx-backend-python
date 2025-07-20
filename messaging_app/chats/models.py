@@ -9,7 +9,7 @@ class User(AbstractUser):
         ADMIN = 'admin', 'Admin'
 
     # Override default id field with UUID
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # First and last name are already in AbstractUser
     # Email is in AbstractUser but we'll make it unique
     email = models.EmailField(unique=True)
