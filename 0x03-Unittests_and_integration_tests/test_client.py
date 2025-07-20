@@ -20,7 +20,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google", {"name": "google", "repos_url": "https://api.github.com/orgs/google/repos"}),
         ("abc", {"name": "abc", "repos_url": "https://api.github.com/orgs/abc/repos"})
     ])
-    @patch('client.get_json')
+    @patch('GithubOrgClient.get_json')
     def test_org(self, org_name: str, expected_payload: Dict, mock_get_json: Mock) -> None:
         """Test that GithubOrgClient.org returns the correct value
 
