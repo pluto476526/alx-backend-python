@@ -29,7 +29,9 @@ class TestGithubOrgClient(unittest.TestCase):
             'client.GithubOrgClient.org',
             new_callable=PropertyMock
         ) as mock_org:
-            mock_org.return_value = {"repos_url": "https://api.github.com/orgs/google/repos"}
+            mock_org.return_value = {
+                "repos_url": "https://api.github.com/orgs/google/repos"
+            }
             test_class = GithubOrgClient("google")
             self.assertEqual(
                 test_class._public_repos_url,
@@ -117,4 +119,5 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos_with_license(self):
         """Test public_repos with license integration"""
         test_class = GithubOrgClient("google")
-        self.assertEqual(test_class.public_repos("apache-2.0"), self.apache2_repos)
+        p_repos = test_class.public_repos("apache-2.0")
+        self.assertEqual(p_repos, self.apache2_repos)
