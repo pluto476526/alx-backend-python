@@ -123,9 +123,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(p_repos, self.apache2_repos)
 
     def test_public_repos(self):
-    """Test public_repos method with integration fixtures"""
-    test_class = GithubOrgClient("google")
-    self.assertEqual(test_class.public_repos(), self.expected_repos)
+        """Test public_repos method with integration fixtures"""
+        test_class = GithubOrgClient("google")
+        self.assertEqual(test_class.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
         """Test public_repos with license filter using integration fixtures"""
