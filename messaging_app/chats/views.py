@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Conversation, Message
 from .permissions import IsParticipant
+from .pagination import MessagePagination
+from .filters import MessageFilter
 from .serializers import (
     ConversationSerializer,
     MessageSerializer,
@@ -73,6 +75,8 @@ class MessageViewSet(viewsets.ModelViewSet):
     # queryset = Message.objects.all()
     permission_classes = [IsAuthenticated, IsParticipant]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    filterset_class = MessageFilter
+    pagination_class = MessagePagination
     filterset_fields = ['conversation', 'sender', 'read']
     ordering_fields = ['sent_at']
     ordering = ['-sent_at']  # Default ordering
