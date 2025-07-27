@@ -70,7 +70,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
         )
 
 class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
+    # queryset = Message.objects.all()
     permission_classes = [IsAuthenticated, IsParticipant]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     filterset_fields = ['conversation', 'sender', 'read']
@@ -85,7 +85,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Only show messages in conversations the user is part of
-        queryset = self.queryset.filter(
+        queryset = Message.objects.filter(
             conversation__participants=self.request.user
         )
         
