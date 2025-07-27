@@ -36,6 +36,13 @@ class ConversationViewSet(viewsets.ModelViewSet):
     def send_message(self, request, pk=None):
         """Endpoint to send a message to a specific conversation"""
         conversation = self.get_object()
+        
+        if request.user not in conversation.participants.all():
+            return Response(
+                {"detail": "Not a participant."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         serializer = MessageCreateSerializer(
             data=request.data,
             context={'request': request}
