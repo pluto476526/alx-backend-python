@@ -70,3 +70,20 @@ class OffensiveLanguageMiddleware:
             return x_forwarded_for.split(',')[0]
         return request.META.get('REMOTE_ADDR')
 
+
+
+class RolePermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        user = request.user
+
+        # Allow if not authenticated (e.g., login route) or staff
+        if user.is_authenticated:
+            # You can customize this part depending on how user roles are defined
+            if not (user.is_superuser or getattr(user, 'role', '') in ['admin', 'moderator']):
+                return HttpResponseForbidden("Access denied. Admin or Moderator only.")
+
+        return self.get_response(request)
+
