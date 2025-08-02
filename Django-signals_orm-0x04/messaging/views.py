@@ -11,17 +11,30 @@ User = get_user_model()
 @login_required
 def conversation_view(request, user_id):
     receiver = get_object_or_404(User, pk=user_id)
-    sender=request.user
+    sender = request.user
+    
+    # Create a unique cache key for this conversation
+    cache_key = f'conversation_{sender.id}_{receiver.id}'
+    
+    # Try to get cached data
+    cached_data = cache.get(cache_key)
+    if cached_data is not None:
+        return cached_data
+    
     messages = Message.objects.filter(
         Q(sender=sender, receiver=receiver) |
         Q(sender=receiver, receiver=sender)
     ).select_related('sender', 'receiver', 'parent_message').order_by('timestamp')
     
-    return render(request, 'messaging/conversation.html', {
+    response = render(request, 'messaging/conversation.html', {
         'receiver': receiver,
         'messages': messages
     })
-
+    
+    # Cache the response
+    cache.set(cache_key, response, 60)
+    
+    return response
 
 @login_required
 def thread_view(request, message_id):
