@@ -17,9 +17,9 @@ def conversation_view(request, user_id):
     cache_key = f'conversation_{sender.id}_{receiver.id}'
     
     # Try to get cached data
-    cached_data = cache.get(cache_key)
-    if cached_data is not None:
-        return cached_data
+    cache_page = cache.get(cache_key)
+    if cache_page is not None:
+        return cache_page
     
     messages = Message.objects.filter(
         Q(sender=sender, receiver=receiver) |
