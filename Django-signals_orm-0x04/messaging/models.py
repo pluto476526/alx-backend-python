@@ -47,3 +47,30 @@ class Message(models.Model):
 
     class Meta:
         ordering = ['timestamp']
+
+
+
+class MessageHistory(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='history')
+    old_content = models.TextField()
+    edited_at = models.DateTimeField(auto_now_add=True)
+    edited_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f"History for message {self.message.id} edited at {self.edited_at}"
+
+    class Meta:
+        verbose_name_plural = "Message Histories"
+        ordering = ['-edited_at']
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='notifications')
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification for {self.user} about message {self.message.id}"
+
+    class Meta:
+        ordering = ['-timestamp']
