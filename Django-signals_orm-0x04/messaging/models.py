@@ -5,6 +5,16 @@ from django.db.models import Q
 
 User = get_user_model()
 
+class UnreadMessagesManager(models.Manager):
+    def for_user(self, user):
+        """Return unread messages for a specific user"""
+        return self.filter(
+            receiver=user,
+            is_read=False
+        ).select_related('sender').only(
+            'id', 'content', 'timestamp', 'sender__username'
+        )
+
 class MessageManager(models.Manager):
     def get_conversation(self, user1, user2):
         """Get all messages between two users in chronological order"""
