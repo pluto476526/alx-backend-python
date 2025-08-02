@@ -9,7 +9,7 @@ class UnreadMessagesManager(models.Manager):
         return self.filter(
             receiver=user,
             is_read=False
-        ).select_related('sender').only(
-            'id', 'content', 'timestamp', 'sender__username'
-        )
+        ).select_related('sender')
+
+
 
