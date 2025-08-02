@@ -33,6 +33,14 @@ def thread_view(request, message_id):
     })
 
 
+@login_required
+def unread_messages(request):
+    unread_messages = Message.unread.unread_for_user(request.user)
+    return render(request, 'messaging/unread_messages.html', {
+        'unread_messages': unread_messages
+    })
+
+
 def delete_user(request):
     user = request.user
     user.delete()

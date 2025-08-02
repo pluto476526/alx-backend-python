@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UnreadMessagesManager(models.Manager):
-    def for_user(self, user):
+    def unread_for_user(self, user):
         """Return unread messages for a specific user"""
         return self.filter(
             receiver=user,
