@@ -11,7 +11,7 @@ User = get_user_model()
 @login_required
 def conversation_view(request, user_id):
     receiver = get_object_or_404(User, pk=user_id)
-    sender = request.user
+    sender=request.user
     messages = Message.objects.filter(
         Q(sender=sender, receiver=receiver) |
         Q(sender=receiver, receiver=sender)
