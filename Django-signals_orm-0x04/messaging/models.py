@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.db.models import Q
-
+from . import managers
 User = get_user_model()
 
 
@@ -31,6 +31,7 @@ class Message(models.Model):
     parent_message = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
 
     objects = MessageManager()
+    unread = managers.UnreadMessagesManager
 
     def __str__(self):
         sender_name = self.sender.username if self.sender else "[deleted]"
