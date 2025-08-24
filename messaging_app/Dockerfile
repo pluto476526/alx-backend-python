@@ -1,4 +1,5 @@
 # Use Python 3.10 as base image
+# -p
 FROM python:3.10
 
 # Set environment variables
@@ -9,9 +10,9 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /messaging_app
 
 # Install dependencies
-COPY Requirements.txt /messaging_app/
+COPY requirements.txt /messaging_app/
 RUN pip install --upgrade pip
-RUN pip install -r Requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy project code
 COPY . /messaging_app/
